@@ -1,0 +1,33 @@
+/*
+Question: Kth Ancestor in a tree
+Link: https://practice.geeksforgeeks.org/problems/kth-ancestor-in-a-tree/1
+return kth ancestor of given node from binary tree
+
+*/
+
+bool find(Node* root, int target, vector<int>& parents){
+    if(!root) return false; //empty tree
+    parents.push_back(root->data); //push parent of current node in the vector => at end it will push all ancestors of given node into the vector
+    
+    if(root->data==target) return true; //if given node exists return true
+    
+    if( find(root->left,target,parents) || find(root->right,target,parents))
+        return true; //if node exists in either left or right subtree
+        
+    parents.pop_back(); //if given node doesnt exist in the tree/ both subtrees -> backtrack and remove parents of current node from vector
+    
+    return false;
+}
+
+int kthAncestor(Node *root, int k, int node)
+{
+    vector<int> parents;
+    find(root, node, parents); //function to find all ancestors of given node, and store them in parents vector
+    
+    int n=parents.size();
+    if(n>k) //if more than k ancestors exist for the node
+    return parents[n-k-1];
+    
+    return -1; //if less than k ancestors exist for the node
+}
+
