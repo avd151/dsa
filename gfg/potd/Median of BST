@@ -14,8 +14,10 @@ float findMedian(struct Node *root)
 {
       vector<int>v;
       inorder(root, v);
+      int ind1 = v.size()/2;
       if(v.size() & 1){
-          return v[v.size()/2];
+          return v[ind1];
       }
-      return ((float)(v[v.size()/2] + v[v.size()/2 - 1]))/2;
+      int ind2 = ind1-1;
+      return ((float)(v[ind1] + v[ind2]))/2;
 }
