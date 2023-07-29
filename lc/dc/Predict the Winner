@@ -1,0 +1,26 @@
+/*
+Question: Predict the Winner
+Link: https://leetcode.com/problems/predict-the-winner/
+
+*/
+
+class Solution {
+    vector<vector<int>>dp;
+    int f(vector<int>& nums, int l, int r){
+        if(dp[l][r] != -1){
+            return dp[l][r];
+        }
+        if(l == r)
+            return dp[l][r] = nums[r];
+        int lScore = nums[l] - f(nums, l+1, r);
+        int rScore = nums[r] - f(nums, l, r-1);
+        dp[l][r] = max(lScore, rScore);
+        return dp[l][r];
+    }
+public:
+    bool PredictTheWinner(vector<int>& nums) {
+        int n = nums.size();
+        dp = vector<vector<int>>(n, vector<int>(n, -1));
+        return f(nums, 0, n-1) >= 0;
+    }
+};
