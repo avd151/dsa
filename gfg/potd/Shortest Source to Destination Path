@@ -1,0 +1,41 @@
+/*
+Question: Shortest Source to Destination Path
+Link: https://practice.geeksforgeeks.org/problems/shortest-source-to-destination-path3544/1
+
+*/
+
+class Solution {
+  public:
+    int shortestDistance(int N, int M, vector<vector<int>> A, int X, int Y) {
+        int ans=0;
+        vector<vector<int>>vis(N,vector<int>(M,-1));
+        queue<pair<int,pair<int,int>>> q;
+        vis[0][0]=1;
+        q.push({0,{0,0}});
+        
+        vector<int>delR={-1,0,1,0};
+        vector<int>delC={0,1,0,-1};
+        while(!q.empty())
+        {
+            int dist=q.front().first;
+            int row=q.front().second.first;
+            int col=q.front().second.second;
+            if(row==X&&col==Y)
+            {
+                return dist;
+            }
+            q.pop();
+            for(int i=0;i<4;i++)
+            {
+               int nrow=row+delR[i];
+               int ncol=col+delC[i];
+               if(nrow>=0&&nrow<N&&ncol>=0&&ncol<M&&A[nrow][ncol]==1&&vis[nrow][ncol]==-1)
+               {
+                   vis[nrow][ncol]=1;
+                   q.push({dist+1,{nrow,ncol,}});
+               }
+            }
+        }
+        return -1;
+    }
+};
