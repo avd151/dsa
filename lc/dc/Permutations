@@ -1,0 +1,45 @@
+/*
+Question: Permutations
+Link: https://leetcode.com/problems/permutations/
+*/
+
+class Solution {
+    void recurPermute(vector<vector<int>>& ans, vector<int>& ds, vector<int>nums, vector<int>& freq){
+        if(ds.size() == nums.size()){
+            ans.push_back(ds);
+            return;
+        }
+        int n = nums.size();
+        for(int i = 0; i < n; i++){
+            if(!freq[i]){
+                ds.push_back(nums[i]);
+                freq[i] = 1;
+                recurPermute(ans, ds, nums, freq);
+                freq[i] = 0;
+                ds.pop_back();
+            }
+        }
+    }
+    void recurPermute2(vector<vector<int>>& ans, vector<int>& nums, int index){
+        if(index == nums.size()){
+            // if(find(ans.begin(), ans.end(), nums) == ans.end())
+            ans.push_back(nums);
+            return;
+        }
+        int n = nums.size();
+        for(int i = index; i < n; i++){
+            swap(nums[index], nums[i]);
+            recurPermute2(ans, nums, index + 1);
+            swap(nums[index], nums[i]);
+        }
+    }
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>>ans;
+        // vector<int>ds;
+        // vector<int>freq(nums.size(), 0);
+        // recurPermute(ans, ds, nums, freq);
+        recurPermute2(ans, nums, 0);
+        return ans;
+    }
+};
