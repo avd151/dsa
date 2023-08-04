@@ -1,0 +1,30 @@
+/*
+Question: Reverse a Stack
+Link: https://practice.geeksforgeeks.org/problems/reverse-a-stack/1
+*/
+
+class Solution{
+public:
+    void helper(stack<int>& st,stack<int> &e){
+        if(st.size()==0)
+            return ;
+        int temp = st.top();
+        st.pop();
+        helper(st,e);
+        while(!st.empty()){
+            int val = st.top();
+            e.push(val);
+            st.pop();
+        }
+        st.push(temp);
+        while(!e.empty()){
+            int val = e.top();
+            st.push(val);
+            e.pop();
+        }
+    }
+    void Reverse(stack<int> &st){
+        stack<int> e;
+        helper(st,e);
+    }
+};
