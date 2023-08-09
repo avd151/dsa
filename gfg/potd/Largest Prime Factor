@@ -1,0 +1,23 @@
+/*
+Question: Largest Prime Factor
+Link: https://practice.geeksforgeeks.org/problems/largest-prime-factor2601/1
+*/
+
+class Solution{
+public: 
+    long long int largestPrimeFactor(int N){
+        if(N <= 1)return -1; 
+        long long int ans = -1; 
+        
+        for(int i = 2; i*i <= N; i++){
+            while(N % i == 0){
+                ans = i; 
+                N = N / i; 
+            }
+        
+        }
+        if(N > 1)ans = N;
+        
+        return ans; 
+    }
+};
