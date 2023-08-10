@@ -1,0 +1,28 @@
+/*
+Question: Longest Common Subsequence
+Link: https://practice.geeksforgeeks.org/problems/longest-common-subsequence-1587115620/1
+*/
+
+class Solution
+{
+    public:
+    int solve(string& s1, string& s2, vector<vector<int>>& dp, int i, int j){
+        if(i == s1.length() || j == s2.length())
+            return 0;
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        int ans = 0;
+        if(s1[i] == s2[j])
+            ans  = 1 + solve(s1, s2, dp, i+1, j+1);
+        else
+            ans = max(solve(s1, s2, dp, i, j+1), solve(s1, s2, dp, i+1, j));
+        return dp[i][j] = ans;
+    }
+    //Function to find the length of longest common subsequence in two strings.
+    int lcs(int n, int m, string s1, string s2)
+    {
+        // using memoization
+        vector<vector<int>>dp(s1.length(), vector<int>(s2.length(), -1));
+        return solve(s1, s2, dp, 0, 0);
+    }
+};
