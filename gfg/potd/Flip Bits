@@ -1,0 +1,25 @@
+/*
+Question: Flip Bits
+Link: https://practice.geeksforgeeks.org/problems/flip-bits0240/1
+*/
+
+class Solution{
+    public:
+    int maxOnes(int a[], int n)
+    {
+        int mxOne = 0, one = 0, flip = 0;
+        for(int i = 0; i < n; i++){
+            if(flip < 0)
+                flip = 0;
+            if(a[i] == 1){
+                flip--;
+                one++;
+            }
+            else{
+                flip++;
+            }
+            mxOne = max(mxOne, flip);
+        }
+        return one+mxOne;
+    }
+};
