@@ -1,0 +1,34 @@
+/*
+Question: Binary Tree to BST
+Link: https://practice.geeksforgeeks.org/problems/binary-tree-to-bst/1
+*/
+
+class Solution{
+  void f(Node* root, vector<Node*>& v, vector<int>& v1, Node* orig_root, int& idx){
+      if(root != NULL){
+          f(root->left, v, v1, orig_root, idx);
+          if(root == orig_root)
+            idx = v.size();
+          v.push_back(root);
+          v1.push_back(root->data);
+          f(root->right, v, v1, root, idx);
+      }
+      
+  }
+  public:
+    // The given root is the root of the Binary Tree
+    // Return the root of the generated BST
+    Node *binaryTreeToBST (Node *root)
+    {
+        //inorder of bst is in sorted order
+        vector<Node*>v;
+        vector<int>v1;
+        int idx = 0;
+        f(root, v, v1, root, idx);
+        sort(v1.begin(), v1.end());
+        for(int i = 0; i < v1.size(); i++){
+            v[i]->data = v1[i];
+        }
+        return root;
+    }
+};
