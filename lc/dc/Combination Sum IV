@@ -1,0 +1,41 @@
+/*
+Question: Combination Sum IV
+Link: https://leetcode.com/problems/combination-sum-iv/
+*/
+
+class Solution {
+    int f(vector<int>arr, int ind, int targ){
+        if(targ < 0)
+            return 0;
+        if(targ == 0)
+            return 1;
+        if(ind < 0)
+            return 0;
+        int notTake = f(arr, ind-1, targ);
+        int take = 0;
+        if(arr[ind] <= targ){
+            take = f(arr, ind, targ-arr[ind]);
+        }
+        return take+notTake;
+    }
+    int solve(vector<int>arr, int tar, vector<int>& dp){
+        if(tar == 0)
+            return 1;
+        if(dp[tar] != -1)
+            return dp[tar];
+        int res = 0;
+        for(auto it: arr){
+            if(it <= tar)
+                res += solve(arr, tar-it, dp);
+        }
+        return dp[tar] = res;
+    }
+public:
+    int combinationSum4(vector<int>& nums, int target) {
+        // sort(nums.begin(), nums.end());
+        // int n = nums.size();
+        // return f(nums, n-1, target);
+        vector<int>dp(target+1, -1);
+        return solve(nums, target, dp);
+    }
+};
