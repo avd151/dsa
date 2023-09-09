@@ -1,0 +1,22 @@
+/*
+Question: Kth largest element in BST
+Link: https://practice.geeksforgeeks.org/problems/kth-largest-element-in-bst/1
+*/
+
+class Solution
+{
+    void f(Node* root, vector<int>& v){
+        if(root == NULL)
+            return;
+        f(root->left, v);
+        v.push_back(root->data);
+        f(root->right, v);
+    }
+    public:
+    int kthLargest(Node *root, int K)
+    {
+        vector<int>v;
+        f(root, v);
+        return v[v.size()-1-K + 1];
+    }
+};
