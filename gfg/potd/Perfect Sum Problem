@@ -1,0 +1,33 @@
+/*
+Question: Perfect Sum Problem
+Link: https://practice.geeksforgeeks.org/problems/perfect-sum-problem5633/1
+*/
+
+class Solution{
+    int mod = 1e9+7;
+    int f(int arr[], int ind, int sum, vector<vector<int>>& dp, int n){
+        if(sum == 0)
+            return 1;
+        if(sum < 0 || ind >= n)
+            return 0;
+        // if(ind == 0)
+        //     return arr[ind] == sum;
+        if(dp[ind][sum] != -1)
+            return dp[ind][sum];
+        // int notake = f(arr, ind-1, sum, dp);
+        // int take = 0;
+        // if(arr[ind] <= sum)
+        //     take = f(arr, ind-1, sum-arr[ind], dp);
+        int notake = f(arr, ind+1, sum, dp, n);
+        int take = f(arr, ind+1, sum-arr[ind], dp, n);
+        return dp[ind][sum] = (take+notake) % mod;
+    }
+	public:
+	int perfectSum(int arr[], int n, int sum)
+	{
+	    sort(arr, arr+n);
+	    vector<vector<int>>dp(n+1, vector<int>(sum+1, -1));
+        return f(arr, 0, sum, dp, n);
+	}
+	  
+};
