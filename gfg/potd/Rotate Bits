@@ -1,0 +1,18 @@
+/*
+Question: Rotate Bits
+Link: https://practice.geeksforgeeks.org/problems/rotate-bits4524/1
+*/
+
+class Solution
+{
+  public:
+        vector <int> rotate (int n, int d)
+        {
+            d = d % 16;
+            int mask = (1 << 16)-1;
+            vector<int>ans(2);
+            ans[0] = (n << d | n >> (16-d)) & mask;
+            ans[1] = (n >> d | n << (16-d)) & mask;
+            return ans;
+        }
+};
