@@ -1,0 +1,48 @@
+/*
+Question: Minimum Operations to Reduce X to Zero
+Link: https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/
+*/
+
+class Solution {
+    unordered_map<string, int>mp;
+public:
+    int f(vector<int>arr, int x, int l, int r, int cnt){
+        if(x == 0)
+            return cnt;
+        if(x < 0 || l > r)
+            return INT_MAX;
+        string key = to_string(l) + "*" + to_string(r) + "*" + to_string(cnt);
+        if(mp.find(key) != mp.end())
+            return mp[key]; 
+        int left = f(arr, x-arr[l], l+1, r, cnt+1);
+        int right = f(arr, x-arr[r], l, r-1, cnt+1);
+        return mp[key] = min(left, right);
+    }
+    int minOperations(vector<int>& nums, int x) {
+        // int ans = f(nums, x, 0, nums.size()-1, 0);
+        // return (ans == INT_MAX ? -1 : ans);
+        unordered_map<int,int>mp;
+        int n = nums.size();
+        int sum = 0;
+        for(int i = 0; i < n; i++){
+            sum += nums[i];
+            mp[sum] = i;
+        }
+        if(x > sum)
+            return -1;
+        mp[0] = 0;
+        int longest = 0;
+        sum = sum-x;
+        int cur = 0;
+        for(int i = 0; i < n; i++){
+            cur += nums[i];
+            if(mp.count(cur-sum)){
+                if(cur-sum == 0)
+                    longest = max(longest, i-mp[cur-sum]+1);
+                else
+                    longest = max(longest, i-mp[cur-sum]);
+            }
+        }
+        return (longest==0) ? ((sum == 0) ? n : -1) : n-longest;
+    }
+};
