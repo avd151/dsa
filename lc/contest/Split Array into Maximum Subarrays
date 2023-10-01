@@ -1,0 +1,42 @@
+/*
+Question: Split Array into Maximum Subarrays
+Link: https://leetcode.com/problems/split-array-into-maximum-number-of-subarrays/description/
+*/
+
+class Solution {
+public:
+    int maxSubarrays(vector<int>& nums) {
+        // int totalAnd = nums[0];
+        // int n = nums.size();
+        // for(int i = 1; i < n; i++){
+        //     totalAnd &= nums[i];
+        // }
+        // if(totalAnd)
+        //     return 1;
+        // int curAnd = -1;
+        // int ans = 0;
+        // for(int i = 0; i < n; i++){
+        //     if(curAnd == -1)
+        //         curAnd = nums[i];
+        //     else
+        //         curAnd &= nums[i];
+        //     if(curAnd == totalAnd){
+        //         ans++;
+        //         curAnd = -1;
+        //     }
+        // }
+        // return ans;
+        //can split only if score of all subarrays is 0
+        //if score of entire array is not zero => sum of scores of subarray will not be less than score of total array
+        int ans = 0, cur = 0;
+        for(int x: nums){
+            if(cur == 0)
+                cur = x;
+            else
+                cur = cur & x;
+            if(cur == 0)
+                ans++;
+        }
+        return max(ans, 1);
+    }
+};
