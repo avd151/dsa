@@ -1,0 +1,75 @@
+/*
+Question: Minimum Size Subarray in Infinite Array
+Link: https://leetcode.com/problems/minimum-size-subarray-in-infinite-array/description/
+*/
+
+class Solution {
+    int check(vector<int>v, int n, int V, vector<int>& dp){
+       if (V == 0) return 0;
+        if(dp[V] != -1)
+            return dp[V];
+       int res = INT_MAX;
+       for (int i=0; i<n; i++)
+       {
+         if (v[i] <= V)
+         {
+             int sub_res = check(v, n, V-v[i], dp);
+             if (sub_res != INT_MAX && sub_res + 1 < res)
+                res = sub_res + 1;
+         }
+         
+       }
+       return dp[V] = res;
+    }
+public:
+    int minSizeSubarray(vector<int>& nums, int target) {
+        //shortest subarray with sum = target
+        //similar to infinite coin change
+        int n = nums.size();
+        // int ans = -1;
+        // for(int i = 0; i < n; i++){
+            
+        //     vector<int>v;
+        //     for(int j = i; j < n; j++){
+        //         v.push_back(nums[j]);
+        //         vector<int>dp(target+1, -1);
+        //         if(check(v, v.size(), target, dp) != INT_MAX){
+        //             ans = max(ans, j-i);
+        //         }
+        //     }
+        // }
+        // return ans;
+
+        //the ques was to find shortest subaray to form the given target, if each element can be considered infinite no. of times
+        //we first find cycles of array reqd using k = target/totsum,
+        //hence further subarray reqd will be the one that gives sum equal to target
+        //there we use map to store sums of subarays till idx i, we store mp[sum] = idx
+        //if we find mp[sum-target] already exists => ans = min(ans, i-mp[sum-target]), which is length of subarray having sum = 
+        //DP can be used when shortest subsequence asked instead of shortest subarray
+        long long totSum = 0;
+        for(auto it: nums){
+            totSum += it;
+        }
+        int k = target/totSum;
+        int ans = n;
+        target = target % totSum;
+        if(target == 0)
+            return k*n;
+        unordered_map<long long, int>mp;
+        mp[0] = -1;
+        //mp[sum] = idx; //stores prefix sum till index idx
+        long long sum = 0;
+        for(int i = 0; i < 2*n; i++){
+            sum += nums[i%n];
+            if(mp.count(sum-target)){
+                ans = min(ans, i-mp[sum-target]);
+            }
+            mp[sum] = i;
+        }
+        if(ans < n)
+            ans = ans + (k*n);
+        else
+            ans = -1;
+        return ans;
+    }
+};
