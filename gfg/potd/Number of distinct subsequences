@@ -1,0 +1,27 @@
+/*
+Question: Number of distinct subsequences
+Link: https://practice.geeksforgeeks.org/problems/number-of-distinct-subsequences0909/1
+*/
+
+class Solution{
+    int mod = 1e9+7;
+  public:	
+	int distinctSubsequences(string s)
+	{
+	    int ans = 1;
+	    unordered_map<char,int>mp;
+	    int n = s.size();
+	    for(int i = 0; i < n; i++){
+	        if(mp.find(s[i]) != mp.end()){
+	            int temp = ans;
+	            ans = ((ans*2)%mod - mp[s[i]] + mod) % mod;
+	            mp[s[i]] = temp;
+	        }
+	        else{
+	            mp[s[i]] = ans;
+	            ans = (ans*2)%mod;
+	        }
+	    }
+	    return ans;
+	}
+};
