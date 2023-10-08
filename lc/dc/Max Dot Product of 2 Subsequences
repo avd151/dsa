@@ -1,0 +1,67 @@
+/*
+Question: Max Dot Product of Two Subsequences
+Link: https://leetcode.com/problems/max-dot-product-of-two-subsequences/description
+*/
+
+// class Solution {
+//     int dp[501][501][2];
+//     int f(int i, int j, vector<int>v1, vector<int>v2, int t){
+//         if(i == v1.size() || j == v2.size()){
+//             if(t == 1)
+//                 return 0;
+//             else
+//                 return -1;
+//         }
+//         if(dp[i][j][t] != INT_MIN)
+//             return dp[i][j][t];
+//         else{
+//             int op1 = v1[i]*v2[j] + f(i+1, j+1, v1, v2, 1);
+//             int op2 = f(i+1, j, v1, v2, t);
+//             int op3 = f(i, j+1, v1, v2, t);
+//             return dp[i][j][t] = max({op1, op2, op3});
+//         }
+//     }
+//     int solve(int i, int j, vector<int>v1, vector<int>v2, vector<vector<int>>& dp1){
+//         if(i == v1.size() || j == v2.size())
+//             return INT_MIN;
+//         if(dp1[i][j] != INT_MIN)
+//             return dp1[i][j];
+//         return dp1[i][j] = max({v1[i]*v2[j] + max(solve(i+1, j+1, v1, v2, dp1), 0), solve(i+1, j, v1, v2, dp1), solve(i, j+1, v1, v2, dp1)});
+//     }
+// public:
+//     int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
+//         // for(int i = 0; i < nums1.size(); i++){
+//         //     for(int j = 0; j < nums2.size(); j++){
+//         //         dp[i][j][0] = dp[i][j][1] = INT_MIN;
+//         //     }
+//         // }
+//         // int ans = f(0, 0, nums1, nums2, 0);
+//         // if(ans == -1){
+//         //     sort(nums1.begin(), nums1.end());
+//         //     sort(nums2.begin(), nums2.end());
+//         //     return max(nums1.front()*nums2.back(), nums1.back()*nums2.front());
+//         // }
+//         // return ans;
+//         vector<vector<int>>dp1(nums1.size()+1, vector<int>(nums2.size()+1, INT_MIN));
+//         return solve(0, 0, nums1, nums2, dp1);
+//     }
+// };
+
+class Solution {
+public:
+    int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        int m = nums2.size();
+        
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, INT_MIN));
+        
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= m; ++j) {
+                dp[i][j] = max(nums1[i - 1] * nums2[j - 1] + max(dp[i - 1][j - 1], 0),
+                              max(dp[i - 1][j], dp[i][j - 1]));
+            }
+        }
+        
+        return dp[n][m];
+    }
+};
