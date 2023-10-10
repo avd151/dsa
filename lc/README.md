@@ -11,3 +11,4 @@
 - https://leetcode.com/problems/max-dot-product-of-two-subsequences/description
 - https://leetcode.com/problems/apply-operations-to-make-two-strings-equal
 - https://leetcode.com/problems/apply-operations-on-array-to-maximize-sum-of-squares
+- https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/
