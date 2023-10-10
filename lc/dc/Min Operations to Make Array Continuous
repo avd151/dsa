@@ -1,0 +1,22 @@
+/*
+Question: Min Operations to Make Array Continuous
+Link: https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/
+*/
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end()); //sort it so we can perform binary search
+        vector<int>uniqueElem(nums.begin(), unique(nums.begin(), nums.end())); //find unique elements from nums and store it in new vector
+        int ans = n; //initialized to max no. of operations
+        for(int i = 0; i < uniqueElem.size(); i++){
+            int s = uniqueElem[i]; //consider ith element as left/ start / min element
+            int e = s + n-1; //required end / max element = s + n-1 (as we want their difference = n-1)
+            auto it = upper_bound(uniqueElem.begin(), uniqueElem.end(), e); //find first index or min index where max element would be present or can be inserted
+            int idx = distance(uniqueElem.begin(), it); //find index of upper bound
+            ans = min(ans, n-(idx-i)); //ans = min of all n-(idx-i) as we have to make rest elements as min/ max to get difference as n-1 
+        }
+        return ans;
+    }
+};
