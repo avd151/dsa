@@ -1,0 +1,27 @@
+/*
+Question: Number of flowers in full bloom
+Link: https://leetcode.com/problems/number-of-flowers-in-full-bloom/
+*/
+
+class Solution {
+public:
+    vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& people) {
+        //ith flower will be in full bloom from starti to endi
+        //people[i] = time when ith person will arrive to see flowers
+        //ans of size n = no. of flowers in full bloom when ith person arrives
+        vector<int>start, end;
+        vector<int>ans;
+        for(auto t: flowers){
+            start.push_back(t[0]);
+            end.push_back(t[1]);
+        }
+        sort(start.begin(), start.end());
+        sort(end.begin(), end.end());
+        for(int t: people){
+            int started = upper_bound(start.begin(), start.end(), t) - start.begin();
+            int ended = lower_bound(end.begin(), end.end(), t) - end.begin();
+            ans.push_back(started-ended);
+        }
+        return ans;
+    }
+};
