@@ -1,0 +1,32 @@
+/*
+Question: Normal BST to Balanced BST
+Link: https://practice.geeksforgeeks.org/problems/normal-bst-to-balanced-bst/1
+*/
+
+class Solution{
+    void inorder(Node* root, vector<int>& inor){
+        if(!root)
+            return;
+        inorder(root->left, inor);
+        inor.push_back(root->data);
+        inorder(root->right, inor);
+    }
+    Node* inorderToBst(int s, int e, vector<int>& inor){
+        if(s > e)
+            return NULL;
+        int mid = (s+e)/2;
+        Node* root = new Node(inor[mid]);
+        root->left = inorderToBst(s, mid-1, inor);
+        root->right = inorderToBst(mid+1, e, inor);
+        return root;
+    }
+    public:
+    // Your are required to complete this function
+    // function should return root of the modified BST
+    Node* buildBalancedTree(Node* root)
+    {
+    	vector<int>inor;
+    	inorder(root, inor);
+    	return inorderToBst(0, inor.size()-1, inor);
+    }
+};
