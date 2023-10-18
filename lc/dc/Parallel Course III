@@ -1,0 +1,48 @@
+/*
+Question: Parallel Course III
+Link: https://leetcode.com/problems/parallel-courses-iii
+*/
+
+class Solution {
+public:
+    int minimumTime(int n, vector<vector<int>>& relations, vector<int>& time) {
+        //directed acyclic graph (DAG)
+        //topological sort, kahn's algorithm
+        vector<int>maxTime(n, 0);
+        unordered_map<int, vector<int>>graph;
+        vector<int>indeg(n, 0);
+        for(vector<int>& edges: relations){
+            int u = edges[0]-1;
+            int v = edges[1]-1;
+            graph[u].push_back(v); //edge from u to v stored
+            indeg[v]++;
+        }
+        queue<int>q;
+        //initially push all nodes with 0 dependencies into grpah - having indegree = 0
+        for(int node = 0; node < n; node++){
+            if(indeg[node] == 0){
+                q.push(node);
+                maxTime[node] = time[node];
+            }
+        }
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            //pop front node, and traverse all its neeighbours and update time reqd for their completion
+            //also reduce indegree, and if it becomes 0 push node into the queue - as we assume its job can be completed independently now
+            for(int it: graph[node]){
+                maxTime[it] = max(maxTime[it], maxTime[node] + time[it]);
+                indeg[it]--;
+                if(indeg[it] == 0){
+                    q.push(it);
+                }
+            }
+        }
+        //traverse max time of completion of all nodes, and return global maximum as ans
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            ans = max(ans, maxTime[i]);
+        }
+        return ans;
+    }
+};
