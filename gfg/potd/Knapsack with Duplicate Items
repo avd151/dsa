@@ -1,0 +1,27 @@
+/*
+Question: Knapsack with Duplicate Items
+Link: https://practice.geeksforgeeks.org/problems/knapsack-with-duplicate-items4201/1
+*/
+
+class Solution{
+    int solve(int idx, int w, int val[], int wt[], vector<vector<int>>& dp){
+        if(idx == 0){
+            return val[0]*(w/wt[0]);
+        }
+        if(dp[idx][w] != -1){
+            return dp[idx][w];
+        }
+        int noTake = solve(idx-1, w, val, wt, dp);
+        int take = INT_MIN;
+        if(wt[idx] <= w){
+            take = val[idx] + solve(idx, w-wt[idx], val, wt, dp);
+        }
+        return dp[idx][w] = max(take, noTake);
+    }
+public:
+    int knapSack(int N, int W, int val[], int wt[])
+    {
+        vector<vector<int>>dp(N, vector<int>(W+1, -1));
+        return solve(N-1, W, val, wt, dp);
+    }
+};
