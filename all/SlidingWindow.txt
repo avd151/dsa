@@ -236,3 +236,83 @@ public:
 Q. Given two strings s and t of lengths m and n respectively, return the minimum window 
 substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
 Link: https://leetcode.com/problems/minimum-window-substring/description/
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        //brute force
+        //TC=O(n(n+m)), SC=O(256)
+        int n = s.size(), m = t.size();
+        int minLen = INT_MAX;
+        int sIndex = -1;
+        // for(int i = 0; i < n; i++){
+        //     int hash[256] = {0};
+        //     for(int k = 0; k < m; k++){
+        //         hash[t[k]]++;
+        //     }
+        //     int cnt = 0;
+        //     for(int j = i; j < n; j++){
+        //         if(hash[s[j]] > 0)
+        //             cnt++;
+        //         hash[s[j]]--;
+        //         if(cnt == m){
+        //             if(j-i+1 < minLen){
+        //                 minLen = j-i+1;
+        //                 sIndex = i;
+        //                 break;
+        //             } 
+        //         }
+        //     }
+        // }
+
+        //sliding window
+        //TC=O(m+2n), SC=O(256)
+        int l = 0, r = 0;
+        int hash[256] = {0};
+        for(int i = 0; i < m; i++){
+            hash[t[i]]++;
+        }
+        int cnt = 0;
+        while(r < n){
+            if(hash[s[r]] > 0)
+                cnt = cnt+1;
+            hash[s[r]]--;
+            while(cnt == m){
+                if(r-l+1 < minLen){
+                    minLen = r-l+1;
+                    sIndex = l;
+                }
+                hash[s[l]]++;
+                if(hash[s[l]] > 0)
+                    cnt = cnt-1;
+                l = l+1;
+            }
+            r = r+1;
+        }   
+        return sIndex == -1 ? "" : s.substr(sIndex, minLen);  
+    }
+};
+
+= Slding Window Maximum
+Q. You are given an array of integers nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position.
+Return the max sliding window.
+Link: https://leetcode.com/problems/sliding-window-maximum/
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        int n = nums.size();
+        priority_queue<pair<int,int>>pq;
+        vector<int>ans(n-k+1);
+        for(int i = 0; i < k; i++){
+            pq.push({nums[i], i});
+        }
+        ans[0] = pq.top().first;
+        for(int i = k; i < n; i++){
+            while(!pq.empty() && pq.top().second <= (i-k)){
+                pq.pop();
+            }
+            pq.push({nums[i], i});
+            ans[i-k+1] = pq.top().first;
+        }
+        return ans;
+    }
+};
